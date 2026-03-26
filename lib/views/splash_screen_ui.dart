@@ -75,6 +75,13 @@ class _SplashScreenUiState extends State<SplashScreenUi> {
                 SizedBox(
                   height: 20,
                 ),
+                Text(
+                  'Version 1.0.0',
+                  style: TextStyle(
+                      color: Colors.grey[700],
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
               ],
             ),
           )
