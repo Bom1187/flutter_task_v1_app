@@ -15,9 +15,7 @@ class _ShowAllTaskUiState extends State<ShowAllTaskUi> {
   final service = SupabaseService();
 
   // สร้างตัวแปรเก็บข้อมูลที่ได้จากการดึงมาจาก supabase
-  List<Task> tasks = [
-
-  ];
+  List<Task> tasks = [];
   void loadTasks() async {
     final data = await service.getTasks();
 
@@ -32,6 +30,7 @@ class _ShowAllTaskUiState extends State<ShowAllTaskUi> {
     // เรียกใช้เมธอดเพื่อดึงข้อมูล ตอนหน้าจอถูกเปิดขึ้นมา
     loadTasks();
   }
+
   Widget build(BuildContext context) {
     return Scaffold(
       // appbar
@@ -82,36 +81,53 @@ class _ShowAllTaskUiState extends State<ShowAllTaskUi> {
             SizedBox(
               height: 40,
             ),
-            // ListView แสดลข้อมูลจาก task_tb จาก supabase 
+            // ListView แสดลข้อมูลจาก task_tb จาก supabase
             Expanded(
               child: ListView.builder(
                 // จำนวนรายการ
                 itemCount: tasks.length,
-                // หน้าตาแต่ละรายการ 
+                // หน้าตาแต่ละรายการ
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    onTap: (){},
-                    leading: tasks[index].task_image_url! != '' 
-                    ? Image.network(
-                      tasks[index].task_image_url!,
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                    )
-                    : Image.asset(
-                      'assets/images/logo.png',
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      top: 10,
+                      bottom: 10,
+                      left: 35,
+                      right: 35,
                     ),
-                    title: Text(
-                      'งาน ${tasks[index].task_name}', 
-                    ),
-                    subtitle: Text(
-                      'สถานะ: ${tasks[index].task_status == true ? 'สําเร็จ' : 'ไม่สําเร็จ'}',
+                    child: ListTile(
+                      onTap: () {},
+                      leading: tasks[index].task_image_url! != ''
+                          ? Image.network(
+                              tasks[index].task_image_url!,
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(
+                              'assets/images/logo.png',
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                            ),
+                      title: Text(
+                        'งาน ${tasks[index].task_name}',
+                      ),
+                      subtitle: Text(
+                        'สถานะ: ${tasks[index].task_status == true ? 'สําเร็จ' : 'ไม่สําเร็จ'}',
+                      ),
+                      trailing: Icon(
+                        Icons.info,
+                        color: Colors.red,
+                      ),
+                      tileColor:
+                          index % 2 == 0 ? Colors.green[50] : Colors.pink[50],
+                      contentPadding: EdgeInsets.all(10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                   );
-
                 },
               ),
             )

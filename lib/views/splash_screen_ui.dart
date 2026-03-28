@@ -35,22 +35,17 @@ class _SplashScreenUiState extends State<SplashScreenUi> {
                   height: 200,
                   fit: BoxFit.cover,
                 ),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 20),
                 Text(
                   'Task Na ja V1',
                   style: TextStyle(
-                      color: Colors.pink,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold),
+                    color: Colors.pink,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                CircularProgressIndicator(
-                  color: Colors.pink,
-                )
+                SizedBox(height: 20),
+                CircularProgressIndicator(color: Colors.pink),
               ],
             ),
           ),
@@ -61,30 +56,31 @@ class _SplashScreenUiState extends State<SplashScreenUi> {
                 Text(
                   'Created by bombay DTI SAU',
                   style: TextStyle(
-                      color: Colors.grey[700],
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
+                    color: Colors.grey[700],
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Text(
                   'SOUTH EAST ASIA UNIVERSITY',
                   style: TextStyle(
-                      color: Colors.grey[700],
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
+                    color: Colors.grey[700],
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 20),
                 Text(
                   'Version 1.0.0',
                   style: TextStyle(
-                      color: Colors.grey[700],
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
+                    color: Colors.grey[700],
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
