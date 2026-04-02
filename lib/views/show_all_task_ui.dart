@@ -55,7 +55,10 @@ class _ShowAllTaskUiState extends State<ShowAllTaskUi> {
             MaterialPageRoute(
               builder: (context) => AddTaskUi(),
             ),
-          );
+          ).then((value) {
+            // เมื่อกลับมาจากหน้า AddTaskUi ให้โหลดข้อมูลใหม่เพื่อแสดงอัปเดตล่าสุด
+            loadTasks();
+          });
         },
         child: Icon(
           Icons.add,

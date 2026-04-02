@@ -20,7 +20,8 @@ class _AddTaskUiState extends State<AddTaskUi> {
   TextEditingController taskPersonController = TextEditingController();
   bool taskStatus = false;
   TextEditingController taskDuedateController = TextEditingController();
-  String? taskImageUrl = " ";
+  String? taskImageUrl =
+      ""; // กำหนดให้ว่างคือ single quote/double quote 2 อันติดกัน
 
   // ตัวแปรเก็บไฟล์ที่ใช้อัพโหลด
   File? file;
@@ -57,6 +58,61 @@ class _AddTaskUiState extends State<AddTaskUi> {
             DateFormat('yyyy-MM-dd').format(selectedDate!);
       });
     }
+  }
+
+  // เมธอดอัปโหลดไฟล์และบันทึกข้อมูล
+  Future<void> save() async {
+    // varidate ui ว่าผู้ใช้งานป้อนข้อมูลต่างๆครบมั้ย
+    if (taskNameController.text.isEmpty ||
+        taskWhereController.text.isEmpty ||
+        taskPersonController.text.isEmpty ||
+        taskDuedateController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('กรุณากรอกข้อมูลให้ครบ'),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
+    // สร้าง instance/object/ตัวแทนของ supabease service เพื่อใช้งานเมธอดต่างๆ ที่สร้างไว้ใน SupabaseService
+    final service = SupabaseService();
+
+    // ตรวจสอบว่ามีการถ่าย/เลือกรูปมั้ย ถ้ามีก็อัปโหลดไฟล์ไปยัง tasl_bk
+    // แล้วเอา URL ของไฟล์ที่อัปโหลดเก็บในตัวแปรเพื่อใช้บันทึกใน task_tb
+    if (file != null) {
+      // หาก file ไม่เท่ากับ null แปลว่าได้มีการถ่ายภาพ/เลือกรูป
+      // อัปโหลดไฟล์ไปยัง task_bk
+      taskImageUrl = await service.uploadFile(file!);
+    }
+
+    // บันทึกข้อมูลง task_tb
+    // แพ็กข้อมูล
+    final task = Task(
+      task_name: taskNameController.text,
+      task_where: taskWhereController.text,
+      task_person: int.parse(taskPersonController.text),
+      task_status: taskStatus,
+      task_duedate: taskDuedateController.text,
+      task_image_url: taskImageUrl,
+    );
+
+    // เรียกใช้เมธอด insetTask ใน SupabaseService เพื่อบันทึกข้อมูลลงไปใน supabase
+    await service.insetTask(task);
+
+    // แจ้งผลการทำงาน (แสดงเป็น snackbar หรือ alertdialog)
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('บันทึกข้อมูลสำเร็จ'),
+        backgroundColor: Colors.green,
+        duration: Duration(seconds: 2),
+      ),
+    );
+
+    // ย้อนกลับไปหน้าหลัก ShowAllTaskUi
+    Navigator.pop(context);
   }
 
   @override
@@ -240,7 +296,7 @@ class _AddTaskUiState extends State<AddTaskUi> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'เสร็จเมื่อไหร้',
+                    'เสร็จเมื่อไหร่',
                     style: TextStyle(
                       fontSize: 18,
                     ),
@@ -264,20 +320,8 @@ class _AddTaskUiState extends State<AddTaskUi> {
                 // ปุ่มบันทึก
                 ElevatedButton(
                   onPressed: () {
-                    // ตรวจสอบว่ามีข้อมูลหรือไม่
-                    if (taskNameController.text.length == 0 ||
-                        taskWhereController.text.length == 0 ||
-                        taskPersonController.text.length == 0 ||
-                        taskDuedateController.text.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('กรุณากรอกข้อมูลให้ครบ'),
-                          backgroundColor: Colors.red,
-                          duration: Duration(seconds: 3),
-                        ),
-                      );
-                      return;
-                    }
+                    // เรียกใช้เมธอด save()
+                    save();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
@@ -306,7 +350,7 @@ class _AddTaskUiState extends State<AddTaskUi> {
                       taskWhereController.clear();
                       taskPersonController.clear();
                       taskDuedateController.clear();
-                      taskStatus = true;
+                      taskStatus = false;
                       file = null;
                       taskImageUrl = '';
                     });
