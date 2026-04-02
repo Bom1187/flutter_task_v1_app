@@ -37,8 +37,6 @@ class _AddTaskUiState extends State<AddTaskUi> {
     }
   }
 
-  // กำหนดค่า file ที่ใช้ในการเก็บไฟล์ที่เลือก
-
   // เปิดปฏิทินเลือกวันที่ และกำหนดวันที่
   DateTime? selectedDate;
 

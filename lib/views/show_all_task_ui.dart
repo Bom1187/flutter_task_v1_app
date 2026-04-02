@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_task_app/model/task.dart';
 import 'package:flutter_task_app/services/supabase_service.dart';
 import 'package:flutter_task_app/views/add_task_ui.dart';
+import 'package:flutter_task_app/views/update_delete_task_ui.dart';
 
 class ShowAllTaskUi extends StatefulWidget {
   const ShowAllTaskUi({super.key});
@@ -99,7 +100,22 @@ class _ShowAllTaskUiState extends State<ShowAllTaskUi> {
                       right: 35,
                     ),
                     child: ListTile(
-                      onTap: () {},
+                      onTap: () {
+                        // เปิดไปหน้า UpdateDeleteTaskUi แบบย้อนหลับได้
+                        // และจะมีการส่งข้อมูลที่ถูกกับไปหน้า UpdateDeleteTaskUi
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UpdateDeleteTaskUi(
+                              task: tasks[index],
+                            ),
+                          ),
+                        ).then(
+                          (value) {
+                            loadTasks();
+                          },
+                        );
+                      },
                       leading: tasks[index].task_image_url! != ''
                           ? Image.network(
                               tasks[index].task_image_url!,

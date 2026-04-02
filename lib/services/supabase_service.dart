@@ -42,8 +42,22 @@ class SupabaseService {
   }
 
   // เมธอดลบไฟล์ที่อัปโหลดไปยัง task_bk
+  Future deleteFile(String fileName) async {
+    // ลบไฟล์ที่อัปโหลดไปยัง task_bk
+    // ก่อนลบให้ตัดเลือกแค่ชื่อไฟล์ ไม่เอาที่อยู่ไฟล์
+    fileName = fileName.split('/').last;
+    await supabase.storage.from('task_bk').remove([fileName]);
+  }
 
   // เมธอดแก้ไขข้อมูลใน task_tb
+  Future updateTask(String id, Task task) async {
+    // เพิ่มไปยัง task_tb
+    await supabase.from('task_tb').update(task.toJson()).eq('id', id);
+  }
 
   // เมธอดลบข้อมูลใน task_tb
+  Future deleteTask(String id) async {
+    // เพิ่มไปยัง task_tb
+    await supabase.from('task_tb').delete().eq('id', id);
+  }
 }
